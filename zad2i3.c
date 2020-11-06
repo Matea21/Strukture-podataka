@@ -47,13 +47,15 @@ int main(void)
 	do {
 		int opcija = 0;
 		Covjek *El = NULL;
-		char prezime[MAX] = { 0 };
+		char prezime[MAX] ;
 		char brisi[MAX];
 		char iza[MAX];
 		char ispred[MAX];
+		Covjek*nadiprezime = NULL;
 		Covjek*obrisielement = NULL;
 		Covjek*dodajiza = NULL;
 		Covjek*dodajispred = NULL;
+		nadiprezime = (Covjek*)malloc(sizeof(Covjek));
 		obrisielement = (Covjek*)malloc(sizeof(Covjek));
 		dodajiza = (Covjek*)malloc(sizeof(Covjek));
 		dodajispred = (Covjek*)malloc(sizeof(Covjek));
@@ -75,35 +77,36 @@ int main(void)
 		switch (opcija)
 		{
 		case(1):
-			UnosPocetak(UnosPodataka(), Head);
+			UnosPocetak(Unos(), Head);
 			break;
 		case(2):
 			IspisListe(Head);
 			break;
 		case(3):
-			UnosKraj(UnosPodataka(), Head);
+			UnosKraj(Unos(), Head);
 			break;
 		case(4):
-			printf("Unesite prezime:\t");
+			printf("Koje prezime zelite pronaci?\t");
 			scanf("%s", prezime);
-			El = TraziElement(prezime, Head);
-			printf("%s %s %d", El->ime, El->prezime, El->godinaRodenja);
+			nadiprezime = TraziPrezime(Head, prezime);
+			printf("\nElement koji ste pretrazili:\nIme: %s\nPrezime: %s\nGodina rodenja: %d\n", nadiprezime->ime, nadiprezime->prezime, nadiprezime->godinaRodenja);
 			break;
 		case(5):
-			printf("Unesite prezime:\t");
-			scanf("%s", prezime);
-			BrisiElement(TraziElement(prezime, Head), Head);
+			printf("Koje prezime zelite obrisati?\t");
+			scanf("%s", brisi);
+			obrisielement = TraziPrezime(Head, brisi);
+			BrisiElement(Head, obrisielement);
 			break;
 		case(6):
 			printf("Iza kojeg elementa zelite dodati drugi element?");
 			scanf("%s", iza);
-			dodajiza = TraziElement(Head, iza);
+			dodajiza = TraziPrezime(Head, iza);
 			DodajIzaElementa(Head, dodajiza);
 			break;
 		case(7):
 			printf("Ispred kojeg elementa zelite dodati drugi element?");
 			scanf("%s", ispred);
-			dodajispred = TraziElement(Head, ispred);
+			dodajispred = TraziPrezime(Head, ispred);
 			DodajIzaElementa(Head, dodajispred);
 			break;
 		case(8):SortitajPoPrezimenu(Head);
@@ -271,7 +274,7 @@ int SortitajPoPrezimenu(Covjek*Head)
 int CitajIzDat(Covjek*Head)
 {
 	Covjek *q;
-	Covjek *p = TraziElement(Head);
+	Covjek *p = TraziZadnji(Head);
 
 	FILE*fp = NULL;
 	fp= fopen("raspored.txt", "r");
