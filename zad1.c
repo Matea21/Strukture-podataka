@@ -7,82 +7,80 @@ typedef struct {
 	char ime[20];
 	char prezime[30];
 	int bodovi;
-} student;
+}student;
 
 int brojiretke(char*);
-void Unos(int,student*,char*);
-void Ispis(int,student*,int);
+void Unos(int, student*, char*);
+void Ispis(int, student*, int);
 
+int main() {
+	
+	int brojstudenata = 0;
+	int maxbrbod = 0;
+	student* s;
+	char filename[] = "studenti.txt";
 
-int main()
-{	
-	int brojstudenata=0;
-	int maxbrbod=0;
-	student*s;
-	char filename[]="studenti.txt";
-	
-	brojstudenata=brojiretke(filename);
-	s=(student*)malloc(brojstudenata*sizeof(student));
-	
-	Unos(brojstudenata,s,filename);
-	
+	brojstudenata = brojiretke(filename);
+	s = (student*)malloc(brojstudenata * sizeof(student));
+
+	Unos(brojstudenata, s, filename);
+
 	printf("Unesite maksimalan broj bodova");
-	scanf("%d",&maxbrbod);
-	Ispis(brojstudenata,s,maxbrbod);
-	
+	scanf("%d", &maxbrbod);
+	Ispis(brojstudenata, s, maxbrbod);
+
 	return 0;
 
+
+
+	return 0;
 }
-int brojiretke(char*filename)
+
+int brojiretke(char* filename)
 {
 	int n;
-	int br_red;
-	FILE *fp=NULL;
+	int br_red=0;
+	FILE* fp = NULL;
 	fp = fopen(filename, "r");
-	
-	if(fp==NULL)
+
+	if (fp == NULL)
 		return -1;
-	while(getc(fp)!='\n')
+	while (getc(fp) != '\n')
 		continue;
-	
-	
+
 	for (n = getc(fp); n != EOF; n = getc(fp)) {
 		if (n == '\n')
 			br_red++;
 	}
+
 	rewind(fp);
 
 	return br_red;
-
 }
-void Unos(int br,student*stud,char*filename)
-{	
+void Unos(int br, student* stud, char* filename) {
 	int i;
-	FILE*fp=NULL;
-	fp=fopen(filename,"r");
-	
-	if(fp==NULL)
+	FILE* fp = NULL;
+	fp = fopen(filename, "r");
+
+	if (fp == NULL)
 		exit(1);
-	
-	for(i=0;i<br;i++){
-		fscanf(fp,"%s",stud[i].ime);
-		fscanf(fp,"%s",stud[i].prezime);
-		fscanf(fp,"%d",&stud[i].bodovi);
-	}
-		
-	
 
+	while (getc(fp) != '\n')
+		continue;
+
+	for (i = 0; i < br; i++) {
+		fscanf(fp, "%s", stud[i].ime);
+		fscanf(fp, "%s", stud[i].prezime);
+		fscanf(fp, "%d", &stud[i].bodovi);
+	}
 
 }
-void Ispis(int brojstudenata,student*s,int maxbrbod)
-{
+void Ispis(int brojstudenata, student* s, int maxbrbod) {
 	int i;
-	printf("IME	PREZIME	BODOVI		RELATIVAN BROJ BODOVA\n");
-	for(i=0;i<brojstudenata;i++)
+	printf("IME		PREZIME		BODOVI		RELATIVAN BROJ  BODOVA\n");
+	for (i = 0; i < brojstudenata; i++)
 	{
-		double relbrbod=(double)s[i].bodovi/maxbrbod*100;
-		printf("%s\t%s\t%d\t\t%lf\n",s[i].ime,s[i].prezime,s[i].bodovi,relbrbod);
-		
+		double relbrbod = (double)s[i].bodovi / maxbrbod * 100;
+		printf("%s\t\t%s\t\t%d\t\t%lf \n", s[i].ime, s[i].prezime, s[i].bodovi, relbrbod);
 	}
-
 }
